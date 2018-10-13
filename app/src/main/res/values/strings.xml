@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Schedule Maker</string>
+    <string name="app_name">Auto SMS Sender</string>
+
+    <string-array name="interval_arrays">
+        <item>Secs</item>
+        <item>Mins</item>
+        <item>Hrs</item>
+    </string-array>
+
 </resources>

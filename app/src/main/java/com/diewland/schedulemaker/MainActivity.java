@@ -63,7 +63,18 @@ public class MainActivity extends AppCompatActivity {
                            "2. Turn off display sleep");
 
         // bind forever checkbox
-        // TODO total_times = Long.MAX_VALUE; --> close to infinite
+        cb_forever.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckBox)v).isChecked()){
+                    et_times.setText(Long.toString(Integer.MAX_VALUE));
+                    et_times.setEnabled(false);
+                }
+                else {
+                    et_times.setEnabled(true);
+                }
+            }
+        });
 
         // bind start button
         btn_start.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             String d = sdf.format(c.getTime());
             all_text = d + " ";
         }
-        // prepend text
+
         String prev_text = tv_console.getText().toString();
         all_text += new_text + "\n" + prev_text;
         tv_console.setText(all_text);

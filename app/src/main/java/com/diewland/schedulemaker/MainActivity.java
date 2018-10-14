@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(((CheckBox)v).isChecked()){
-                    et_times.setText(Long.toString(Integer.MAX_VALUE));
+                    et_times.setText("99999");
                     et_times.setEnabled(false);
                 }
                 else {
@@ -81,7 +82,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // TODO all fields must not be null
+                // require fill all fields
+                if(et_tel_no.getText().toString().matches("")){
+                    Toast.makeText(getApplicationContext(), "Please fill Tel.No", Toast.LENGTH_LONG).show();
+                    et_tel_no.requestFocus();
+                    return;
+                }
+                else if(et_text.getText().toString().matches("")){
+                    Toast.makeText(getApplicationContext(), "Please fill Text", Toast.LENGTH_LONG).show();
+                    et_text.requestFocus();
+                    return;
+                }
+                else if(et_interval.getText().toString().matches("")){
+                    Toast.makeText(getApplicationContext(), "Please fill Interval", Toast.LENGTH_LONG).show();
+                    et_interval.requestFocus();
+                    return;
+                }
+                else if(et_times.getText().toString().matches("")){
+                    Toast.makeText(getApplicationContext(), "Please fill Times", Toast.LENGTH_LONG).show();
+                    et_times.requestFocus();
+                    return;
+                }
 
                 // block screen
                 et_tel_no.setEnabled(false);

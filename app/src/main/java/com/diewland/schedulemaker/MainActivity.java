@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         btn_stop = (Button) findViewById(R.id.btn_stop);
         tv_console = (TextView) findViewById(R.id.tv_console);
 
+        // request permission
+        PermissionUtil.requestPermissions(this);
+
         // set default config
         et_interval.setText("10");
         et_times.setText("6");
@@ -81,28 +84,8 @@ public class MainActivity extends AppCompatActivity {
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // require fill all fields
-                if(et_tel_no.getText().toString().matches("")){
-                    Toast.makeText(getApplicationContext(), "Please fill Tel.No", Toast.LENGTH_LONG).show();
-                    et_tel_no.requestFocus();
-                    return;
-                }
-                else if(et_text.getText().toString().matches("")){
-                    Toast.makeText(getApplicationContext(), "Please fill Text", Toast.LENGTH_LONG).show();
-                    et_text.requestFocus();
-                    return;
-                }
-                else if(et_interval.getText().toString().matches("")){
-                    Toast.makeText(getApplicationContext(), "Please fill Interval", Toast.LENGTH_LONG).show();
-                    et_interval.requestFocus();
-                    return;
-                }
-                else if(et_times.getText().toString().matches("")){
-                    Toast.makeText(getApplicationContext(), "Please fill Times", Toast.LENGTH_LONG).show();
-                    et_times.requestFocus();
-                    return;
-                }
+                if(!validate_form()){ return; }
 
                 // block screen
                 et_tel_no.setEnabled(false);
@@ -142,7 +125,15 @@ public class MainActivity extends AppCompatActivity {
                         String text = et_text.getText().toString();
 
                         // execute task
-                        MyTask.run(getApplicationContext(), round_no, tel_no, text);
+                        prepend_console("", false);
+                        try {
+                            MyTask.run(getApplicationContext(), round_no, tel_no, text);
+                            prepend_console("=> Message Sent", false);
+                        }
+                        catch(Exception ex){
+                            prepend_console("=> " + ex.getMessage().toString(), false);
+                            ex.printStackTrace();
+                        }
 
                         // update log
                         prepend_console("=> " + tel_no + " " + text, false);
@@ -166,6 +157,31 @@ public class MainActivity extends AppCompatActivity {
                 stop_timer();
             }
         });
+    }
+
+    // FORM FUNCTION
+    private boolean validate_form(){
+        if(et_tel_no.getText().toString().matches("")){
+            Toast.makeText(getApplicationContext(), "Tel.No is blank", Toast.LENGTH_LONG).show();
+            et_tel_no.requestFocus();
+            return false;
+        }
+        else if(et_text.getText().toString().matches("")){
+            Toast.makeText(getApplicationContext(), "Text is blank", Toast.LENGTH_LONG).show();
+            et_text.requestFocus();
+            return false;
+        }
+        else if(et_interval.getText().toString().matches("")){
+            Toast.makeText(getApplicationContext(), "Interval is blank", Toast.LENGTH_LONG).show();
+            et_interval.requestFocus();
+            return false;
+        }
+        else if(et_times.getText().toString().matches("")){
+            Toast.makeText(getApplicationContext(), "Times is blank", Toast.LENGTH_LONG).show();
+            et_times.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     // TIMER FUNCTION
